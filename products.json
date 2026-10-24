@@ -1,0 +1,669 @@
+{
+  "products": [
+    {
+      "code": "AK39",
+      "name": "Bordeaux Crystal Couture",
+      "price": 7500,
+      "category": "luxe",
+      "shape": "Long almond",
+      "description": "Our most opulent set: deep bordeaux gloss with gold-chain framed charms and fully encrusted crystal accent nails that catch light from every angle.",
+      "images": [
+        "img/n39.webp"
+      ],
+      "sort_order": 10,
+      "visible": true
+    },
+    {
+      "code": "AK15",
+      "name": "Lilac Blossom Seashell",
+      "price": 3000,
+      "category": "floral",
+      "shape": "Almond",
+      "description": "Sculpted 3D lilac flowers, seashell ridges and pearl drops over a nude base, finished with powder-blue and lavender French tips.",
+      "images": [
+        "img/n15.webp"
+      ],
+      "sort_order": 20,
+      "visible": true
+    },
+    {
+      "code": "AK26",
+      "name": "Ivory Orchid Gold Vine",
+      "price": 3000,
+      "category": "floral",
+      "shape": "Stiletto",
+      "description": "Hand-sculpted ivory orchids trailing gold vines across a soft pink French on long stiletto tips.",
+      "images": [
+        "img/n26.webp"
+      ],
+      "sort_order": 30,
+      "visible": true
+    },
+    {
+      "code": "AK21",
+      "name": "Sapphire Bloom",
+      "price": 3000,
+      "category": "floral",
+      "shape": "Almond",
+      "description": "Navy and sky-blue florals in raised 3D petals with golden centres and a pearly fan-shell accent.",
+      "images": [
+        "img/n21.webp"
+      ],
+      "sort_order": 40,
+      "visible": true
+    },
+    {
+      "code": "AK08",
+      "name": "Pearl Blush Dream",
+      "price": 2000,
+      "category": "luxe",
+      "shape": "Almond",
+      "description": "Iridescent pink chrome scattered with tiny seed pearls. Soft, bridal and quietly glamorous.",
+      "images": [
+        "img/n08.webp"
+      ],
+      "sort_order": 50,
+      "visible": true
+    },
+    {
+      "code": "AK12",
+      "name": "Burgundy Gilded Lattice",
+      "price": 4500,
+      "category": "luxe",
+      "shape": "Long almond",
+      "description": "Rich burgundy with gold lattice lines, gold swirls and sculpted gold bows over a nude accent.",
+      "images": [
+        "img/n12.webp"
+      ],
+      "sort_order": 60,
+      "visible": true
+    },
+    {
+      "code": "AK10",
+      "name": "Rose Slate Gilded Marble",
+      "price": 2700,
+      "category": "luxe",
+      "shape": "Almond",
+      "description": "Rose pink and slate grey jelly tones framed with hand-drawn gold outlines for a modern marble look.",
+      "images": [
+        "img/n10.webp"
+      ],
+      "sort_order": 70,
+      "visible": true
+    },
+    {
+      "code": "AK30",
+      "name": "Neapolitan Candy Stripe",
+      "price": 3500,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Strawberry pink, vanilla cream and chocolate stripes and dots: a playful dessert-inspired mix-and-match set.",
+      "images": [
+        "img/n30.webp"
+      ],
+      "sort_order": 80,
+      "visible": true
+    },
+    {
+      "code": "AK03",
+      "name": "Aurora Sky French",
+      "price": 1550,
+      "category": "french",
+      "shape": "Almond",
+      "description": "A sheer nude base with a holographic aurora glaze and crisp sky-blue French tips. Shown from two angles.",
+      "images": [
+        "img/n03.webp",
+        "img/n14.webp"
+      ],
+      "sort_order": 90,
+      "visible": true
+    },
+    {
+      "code": "AK04",
+      "name": "Midnight Silver Halo French",
+      "price": 1600,
+      "category": "french",
+      "shape": "Almond",
+      "description": "Black French tips outlined with a fine silver glitter halo over a milky nude base. Shown from two angles.",
+      "images": [
+        "img/n04.webp",
+        "img/n13.webp"
+      ],
+      "sort_order": 100,
+      "visible": true
+    },
+    {
+      "code": "AK11",
+      "name": "Ruby Gold Gala",
+      "price": 3000,
+      "category": "luxe",
+      "shape": "Long almond",
+      "description": "Ruby red gloss alternating with gold glitter and nude-gold edges, studded with rhinestones for party nights.",
+      "images": [
+        "img/n11.webp"
+      ],
+      "sort_order": 110,
+      "visible": true
+    },
+    {
+      "code": "AK05",
+      "name": "Mauve Gilded Cat-Eye",
+      "price": 1700,
+      "category": "chrome",
+      "shape": "Almond",
+      "description": "Velvety mauve cat-eye shimmer, each nail framed in a fine gold outline.",
+      "images": [
+        "img/n05.webp"
+      ],
+      "sort_order": 120,
+      "visible": true
+    },
+    {
+      "code": "AK00",
+      "name": "Cherry Cat-Eye Velvet",
+      "price": 1000,
+      "category": "chrome",
+      "shape": "Almond",
+      "description": "Deep cherry red with a magnetic cat-eye glow that shifts as you move.",
+      "images": [
+        "img/n00.webp"
+      ],
+      "sort_order": 130,
+      "visible": true
+    },
+    {
+      "code": "AK01",
+      "name": "Icy Pearl Chrome",
+      "price": 1100,
+      "category": "chrome",
+      "shape": "Long almond",
+      "description": "Frosted ice-blue cat-eye chrome with a pearly sheen.",
+      "images": [
+        "img/n01.webp"
+      ],
+      "sort_order": 140,
+      "visible": true
+    },
+    {
+      "code": "AK36",
+      "name": "Rose Quartz Cat-Eye French",
+      "price": 1300,
+      "category": "chrome",
+      "shape": "Short oval",
+      "description": "Glowing rose-quartz cat-eye shimmer on a deep white French tip.",
+      "images": [
+        "img/n36.webp"
+      ],
+      "sort_order": 150,
+      "visible": true
+    },
+    {
+      "code": "AK19",
+      "name": "Ocean Mist Cat-Eye",
+      "price": 1800,
+      "category": "chrome",
+      "shape": "Almond",
+      "description": "Sea-glass teal cat-eye mixed with nude French accents and chrome-outlined detail nails.",
+      "images": [
+        "img/n19.webp"
+      ],
+      "sort_order": 160,
+      "visible": true
+    },
+    {
+      "code": "AK02",
+      "name": "Bordeaux Shimmer French",
+      "price": 1550,
+      "category": "french",
+      "shape": "Almond",
+      "description": "Champagne-pink shimmer base with rich bordeaux French tips.",
+      "images": [
+        "img/n02.webp"
+      ],
+      "sort_order": 170,
+      "visible": true
+    },
+    {
+      "code": "AK07",
+      "name": "Petal & Gold Halo French",
+      "price": 1900,
+      "category": "french",
+      "shape": "Almond",
+      "description": "Classic white French with gold-ring accents and tiny 3D white blossoms.",
+      "images": [
+        "img/n07.webp"
+      ],
+      "sort_order": 180,
+      "visible": true
+    },
+    {
+      "code": "AK06",
+      "name": "Daisy Blush French",
+      "price": 1800,
+      "category": "french",
+      "shape": "Almond",
+      "description": "Blush nude with crisp white French tips and a single cluster of 3D daisies.",
+      "images": [
+        "img/n06.webp"
+      ],
+      "sort_order": 190,
+      "visible": true
+    },
+    {
+      "code": "AK47",
+      "name": "Pearl Daisy French",
+      "price": 1800,
+      "category": "floral",
+      "shape": "Oval",
+      "description": "Soft white French with pearl-centred 3D daisy clusters on two accent nails.",
+      "images": [
+        "img/n47.webp"
+      ],
+      "sort_order": 200,
+      "visible": true
+    },
+    {
+      "code": "AK22",
+      "name": "Onyx Stardust French",
+      "price": 1550,
+      "category": "french",
+      "shape": "Almond",
+      "description": "Sparkling black glitter French tips on a glossy pink nude base.",
+      "images": [
+        "img/n22.webp"
+      ],
+      "sort_order": 210,
+      "visible": true
+    },
+    {
+      "code": "AK37",
+      "name": "Hot Pink Micro French",
+      "price": 1550,
+      "category": "french",
+      "shape": "Short almond",
+      "description": "Peachy nude with a slim hot-pink French line. Everyday-easy.",
+      "images": [
+        "img/n37.webp"
+      ],
+      "sort_order": 220,
+      "visible": true
+    },
+    {
+      "code": "AK16",
+      "name": "Peach Classic Square French",
+      "price": 1000,
+      "category": "french",
+      "shape": "Square",
+      "description": "The timeless square French: peach-pink base with bright white tips.",
+      "images": [
+        "img/n16.webp"
+      ],
+      "sort_order": 230,
+      "visible": true
+    },
+    {
+      "code": "AK31",
+      "name": "Caramel Milk French",
+      "price": 1000,
+      "category": "french",
+      "shape": "Short almond",
+      "description": "Warm caramel nude with milky white tips in a short, wearable length.",
+      "images": [
+        "img/n31.webp"
+      ],
+      "sort_order": 240,
+      "visible": true
+    },
+    {
+      "code": "AK33",
+      "name": "Noir Dot Blossom French",
+      "price": 1800,
+      "category": "french",
+      "shape": "Stiletto",
+      "description": "Black French tips with white micro-dots and a sweet pink 3D flower accent.",
+      "images": [
+        "img/n33.webp"
+      ],
+      "sort_order": 250,
+      "visible": true
+    },
+    {
+      "code": "AK17",
+      "name": "Gold Leaf Nude",
+      "price": 1550,
+      "category": "luxe",
+      "shape": "Long almond",
+      "description": "Sheer nude with flakes of gold leaf gathered toward the tips.",
+      "images": [
+        "img/n17.webp"
+      ],
+      "sort_order": 260,
+      "visible": true
+    },
+    {
+      "code": "AK35",
+      "name": "Champagne Glitter Ombre",
+      "price": 1550,
+      "category": "luxe",
+      "shape": "Almond",
+      "description": "Nude base melting into champagne-silver glitter at the tips.",
+      "images": [
+        "img/n35.webp"
+      ],
+      "sort_order": 270,
+      "visible": true
+    },
+    {
+      "code": "AK09",
+      "name": "Mauve Glitter Bow",
+      "price": 2500,
+      "category": "luxe",
+      "shape": "Almond",
+      "description": "Dusty mauve gloss with holographic glitter nails and sculpted pastel bows.",
+      "images": [
+        "img/n09.webp"
+      ],
+      "sort_order": 280,
+      "visible": true
+    },
+    {
+      "code": "AK29",
+      "name": "Chocolate Cherry Gilded Square",
+      "price": 2500,
+      "category": "luxe",
+      "shape": "Square",
+      "description": "Glossy chocolate-cherry squares with a nude accent dotted in gold studs.",
+      "images": [
+        "img/n29.webp"
+      ],
+      "sort_order": 290,
+      "visible": true
+    },
+    {
+      "code": "AK45",
+      "name": "Olive Noir Gilded Edge",
+      "price": 3000,
+      "category": "luxe",
+      "shape": "Almond",
+      "description": "Olive green, noir and nude mixed with gold chain bands, studs and a starburst gem.",
+      "images": [
+        "img/n45.webp"
+      ],
+      "sort_order": 300,
+      "visible": true
+    },
+    {
+      "code": "AK24",
+      "name": "Cobalt Daisy Pop",
+      "price": 1800,
+      "category": "floral",
+      "shape": "Almond",
+      "description": "Bold cobalt blue with a nude accent and a 3D white daisy.",
+      "images": [
+        "img/n24.webp"
+      ],
+      "sort_order": 310,
+      "visible": true
+    },
+    {
+      "code": "AK25",
+      "name": "Golden Petal Square French",
+      "price": 1900,
+      "category": "floral",
+      "shape": "Square",
+      "description": "Square French with sculpted white petals and gold swirl accents.",
+      "images": [
+        "img/n25.webp"
+      ],
+      "sort_order": 320,
+      "visible": true
+    },
+    {
+      "code": "AK28",
+      "name": "Merlot Blossom Gloss",
+      "price": 1900,
+      "category": "floral",
+      "shape": "Coffin",
+      "description": "Deep merlot gloss with white 3D blossom accent nails.",
+      "images": [
+        "img/n28.webp"
+      ],
+      "sort_order": 330,
+      "visible": true
+    },
+    {
+      "code": "AK23",
+      "name": "Polka Blossom Stiletto",
+      "price": 1600,
+      "category": "floral",
+      "shape": "Stiletto",
+      "description": "White polka-dot French tips on a sheer pink base with a soft 3D bloom.",
+      "images": [
+        "img/n23.webp"
+      ],
+      "sort_order": 340,
+      "visible": true
+    },
+    {
+      "code": "AK43",
+      "name": "Plum Daisy French",
+      "price": 1600,
+      "category": "floral",
+      "shape": "Almond",
+      "description": "Peachy nude with plum French tips and a white daisy accent.",
+      "images": [
+        "img/n43.webp"
+      ],
+      "sort_order": 350,
+      "visible": true
+    },
+    {
+      "code": "AK50",
+      "name": "Cocoa Bluebell Blossom",
+      "price": 1600,
+      "category": "floral",
+      "shape": "Almond",
+      "description": "Glossy cocoa brown paired with cream nails painted in tiny bluebell flowers.",
+      "images": [
+        "img/n50.webp"
+      ],
+      "sort_order": 360,
+      "visible": true
+    },
+    {
+      "code": "AK51",
+      "name": "Cherry Cream Blossom",
+      "price": 1800,
+      "category": "floral",
+      "shape": "Almond",
+      "description": "Pink and cream with cherry micro-dots and a 3D white flower centrepiece.",
+      "images": [
+        "img/n51.webp"
+      ],
+      "sort_order": 370,
+      "visible": true
+    },
+    {
+      "code": "AK20",
+      "name": "Blush Croc Polka Couture",
+      "price": 3000,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Embossed blush croc texture, black-and-white polka dots and gold bar accents.",
+      "images": [
+        "img/n20.webp"
+      ],
+      "sort_order": 380,
+      "visible": true
+    },
+    {
+      "code": "AK34",
+      "name": "Mint Cocoa Bubble",
+      "price": 3000,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Aqua and pink with raised cocoa bubble dots and rhinestone sparkle.",
+      "images": [
+        "img/n34.webp"
+      ],
+      "sort_order": 390,
+      "visible": true
+    },
+    {
+      "code": "AK40",
+      "name": "Lavender Mint Candy Gems",
+      "price": 3000,
+      "category": "polka",
+      "shape": "Stiletto",
+      "description": "Lavender, mint and pink candy stripes and dots, studded with silver gems.",
+      "images": [
+        "img/n40.webp"
+      ],
+      "sort_order": 400,
+      "visible": true
+    },
+    {
+      "code": "AK38",
+      "name": "Rainbow Sprinkle Pop",
+      "price": 2000,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Ten different pastel brights, each sprinkled with confetti dots.",
+      "images": [
+        "img/n38.webp"
+      ],
+      "sort_order": 410,
+      "visible": true
+    },
+    {
+      "code": "AK44",
+      "name": "Pink Candy Stripe Polka",
+      "price": 1800,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Candy pink stripes and polka dots on soft white.",
+      "images": [
+        "img/n44.webp"
+      ],
+      "sort_order": 420,
+      "visible": true
+    },
+    {
+      "code": "AK41",
+      "name": "Watermelon Mint Polka",
+      "price": 1650,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Watermelon pink and mint green with contrasting dots.",
+      "images": [
+        "img/n41.webp"
+      ],
+      "sort_order": 430,
+      "visible": true
+    },
+    {
+      "code": "AK18",
+      "name": "Merlot Pearl Dot",
+      "price": 1600,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Glossy merlot with dainty white dots on every nail.",
+      "images": [
+        "img/n18.webp"
+      ],
+      "sort_order": 440,
+      "visible": true
+    },
+    {
+      "code": "AK27",
+      "name": "Noir Polka French",
+      "price": 1600,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Black polka-dot French tips over a clean nude base.",
+      "images": [
+        "img/n27.webp"
+      ],
+      "sort_order": 450,
+      "visible": true
+    },
+    {
+      "code": "AK49",
+      "name": "Midnight Starry Dot",
+      "price": 1600,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Full black gloss scattered with tiny white dots like a starry sky.",
+      "images": [
+        "img/n49.webp"
+      ],
+      "sort_order": 460,
+      "visible": true
+    },
+    {
+      "code": "AK32",
+      "name": "Pistachio Cream Polka",
+      "price": 1600,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Pistachio green alternating with cream nails dotted in mint.",
+      "images": [
+        "img/n32.webp"
+      ],
+      "sort_order": 470,
+      "visible": true
+    },
+    {
+      "code": "AK42",
+      "name": "Denim Cream Polka",
+      "price": 1600,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Denim blue gloss paired with cream polka-dot accents.",
+      "images": [
+        "img/n42.webp"
+      ],
+      "sort_order": 480,
+      "visible": true
+    },
+    {
+      "code": "AK46",
+      "name": "Fuchsia Pop Polka",
+      "price": 1600,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Hot fuchsia alternating with white nails dotted in fuchsia.",
+      "images": [
+        "img/n46.webp"
+      ],
+      "sort_order": 490,
+      "visible": true
+    },
+    {
+      "code": "AK48",
+      "name": "Peach Sorbet Polka",
+      "price": 1600,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Peach sorbet gloss with buttery cream polka-dot accents.",
+      "images": [
+        "img/n48.webp"
+      ],
+      "sort_order": 500,
+      "visible": true
+    },
+    {
+      "code": "AK52",
+      "name": "Mocha Blush Polka",
+      "price": 1600,
+      "category": "polka",
+      "shape": "Almond",
+      "description": "Deep mocha gloss and blush-pink nails with chocolate dots.",
+      "images": [
+        "img/n52.webp"
+      ],
+      "sort_order": 510,
+      "visible": true
+    }
+  ]
+}

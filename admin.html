@@ -1,0 +1,755 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>AK Nail Co Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Jost:wght@300;400;500;600&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script>
+  if (window.tailwind) tailwind.config = { theme: { extend: {
+    colors: { blush: 'var(--blush)', petal: 'var(--petal)', rose: 'var(--rose)', rosegold: 'var(--rosegold)', ink: 'var(--ink)', muted: 'var(--muted)', line: 'var(--line)' },
+    fontFamily: { display: ['"Bodoni Moda"', 'Didot', 'serif'], body: ['Jost', '"Helvetica Neue"', 'Arial', 'sans-serif'] }
+  } } }
+</script>
+<style>
+  /* Layout: compact top bar → mode banner → stats strip → toolbar → product rows (cards on phones) → slide-in editor */
+  :root {
+    --white: #FFFFFF; --blush: #FCEEF1; --petal: #F7D3DC; --rose: #B8436A; --rosegold: #B9787F;
+    --ink: #3B1E2B; --muted: #8C6D78; --line: #F0DCE2; --ok: #1F8A52; --warn: #B7791F; --bad: #C0392B;
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  img { max-width: 100%; }
+  body { margin: 0; background: #FDF7F8; color: var(--ink); font-family: Jost, "Helvetica Neue", Arial, sans-serif; font-size: 15px; line-height: 1.5; }
+  .gutter { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; font-weight: 500; color: var(--rosegold); }
+  .tabular { font-variant-numeric: tabular-nums; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .45rem; border-radius: 999px; font-weight: 500; padding: .6rem 1.1rem; font-size: 14px; transition: all .18s ease; cursor: pointer; border: 1px solid transparent; white-space: nowrap; }
+  .btn:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-rose { background: var(--rose); color: #fff; } .btn-rose:hover:not(:disabled) { background: #9E3358; }
+  .btn-line { background: #fff; border-color: var(--line); color: var(--ink); } .btn-line:hover:not(:disabled) { border-color: var(--rosegold); color: var(--rose); }
+  .btn-bad { background: var(--bad); color: #fff; } .btn-bad:hover { background: #A93226; }
+  .btn-sm { padding: .4rem .8rem; font-size: 13px; }
+  .icon-btn { width: 34px; height: 34px; border-radius: 999px; display: inline-grid; place-items: center; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
+  .icon-btn:hover:not(:disabled) { border-color: var(--rose); color: var(--rose); }
+  .icon-btn:disabled { opacity: .35; cursor: not-allowed; }
+  :focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; }
+  .field { width: 100%; border: 1px solid var(--line); background: #fff; border-radius: 12px; padding: .65rem .85rem; font: inherit; color: var(--ink); }
+  .field:focus { outline: none; border-color: var(--rose); box-shadow: 0 0 0 3px rgba(184,67,106,.15); }
+  label.lbl { display: block; font-size: 13px; font-weight: 500; margin-bottom: .35rem; }
+  .panel { background: #fff; border: 1px solid var(--line); border-radius: 20px; }
+
+  .row { display: grid; grid-template-columns: 34px 64px minmax(0,1fr) 150px 110px auto; gap: 14px; align-items: center; padding: 12px 16px; border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; }
+  .row.is-hidden .thumbimg, .row.is-hidden .pname { opacity: .45; }
+  .thumbimg { width: 64px; height: 76px; border-radius: 12px; object-fit: cover; background: var(--blush); }
+  .order-col { display: flex; flex-direction: column; gap: 4px; }
+  .order-col .icon-btn { width: 30px; height: 26px; border-radius: 8px; }
+  .price-wrap { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; }
+  .price-wrap span { padding: 0 .55rem; color: var(--muted); font-size: 13px; background: var(--blush); align-self: stretch; display: grid; place-items: center; }
+  .price-wrap input { border: 0; width: 100%; padding: .55rem .6rem; font: inherit; font-variant-numeric: tabular-nums; color: var(--ink); min-width: 0; }
+  .price-wrap input:focus { outline: none; }
+  .price-wrap:focus-within { border-color: var(--rose); }
+  @media (max-width: 760px) {
+    .row { grid-template-columns: 64px minmax(0,1fr); grid-template-areas: "img info" "img price" "act act"; gap: 8px 12px; }
+    .row .order-col { display: none; }
+    .row .c-img { grid-area: img; } .row .c-info { grid-area: info; } .row .c-price { grid-area: price; display: flex; gap: 10px; align-items: center; }
+    .row .c-vis { display: none; } .row .c-vis-m { display: inline-flex !important; }
+    .row .c-act { grid-area: act; justify-content: flex-start; }
+  }
+
+  .switch { position: relative; width: 44px; height: 26px; flex-shrink: 0; }
+  .switch input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; z-index: 1; }
+  .switch .track { position: absolute; inset: 0; background: #E6D3D9; border-radius: 999px; transition: .2s; }
+  .switch .track::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: .2s; }
+  .switch input:checked + .track { background: var(--ok); }
+  .switch input:checked + .track::after { transform: translateX(18px); }
+  .switch input:focus-visible + .track { outline: 2px solid var(--rose); outline-offset: 2px; }
+
+  .overlay { position: fixed; inset: 0; z-index: 50; background: rgba(59,30,43,.45); display: flex; justify-content: flex-end; }
+  .drawer { background: #fff; width: 100%; max-width: 560px; height: 100%; overflow-y: auto; display: flex; flex-direction: column; animation: slide .25s ease; padding-top: env(safe-area-inset-top, 0px); }
+  @keyframes slide { from { transform: translateX(30px); opacity: .5; } to { transform: none; opacity: 1; } }
+  .dialog-wrap { position: fixed; inset: 0; z-index: 60; background: rgba(59,30,43,.45); display: grid; place-items: center; padding: 16px; }
+  .dialog { background: #fff; border-radius: 22px; max-width: 420px; width: 100%; padding: 26px; }
+
+  .imgs { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+  .imgtile { position: relative; aspect-ratio: 4/5; border-radius: 14px; overflow: hidden; background: var(--blush); border: 2px solid transparent; }
+  .imgtile.main { border-color: var(--rose); }
+  .imgtile img { width: 100%; height: 100%; object-fit: cover; }
+  .imgtile .tag { position: absolute; left: 6px; top: 6px; background: var(--rose); color: #fff; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; padding: 2px 7px; border-radius: 999px; }
+  .imgtile .tools { position: absolute; inset: auto 6px 6px 6px; display: flex; gap: 4px; justify-content: space-between; }
+  .imgtile .tools button { background: rgba(255,255,255,.95); border: 0; border-radius: 999px; font-size: 11px; padding: 4px 8px; cursor: pointer; color: var(--ink); }
+  .imgtile .tools button:hover { color: var(--rose); }
+  .drop { border: 2px dashed var(--petal); border-radius: 14px; aspect-ratio: 4/5; display: grid; place-items: center; text-align: center; color: var(--muted); cursor: pointer; font-size: 13px; padding: 8px; background: #FFFBFC; }
+  .drop:hover, .drop.over { border-color: var(--rose); color: var(--rose); background: var(--blush); }
+
+  .banner { border-radius: 16px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; flex-wrap: wrap; }
+  .banner.local { background: #FFF6E5; border: 1px solid #F3DDB0; }
+  .banner.live { background: #E9F7EF; border: 1px solid #BFE5CF; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+  .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(22px + env(safe-area-inset-bottom, 0px)); z-index: 90; background: var(--ink); color: #fff; padding: .6rem 1.1rem; border-radius: 999px; font-size: 14px; max-width: calc(100% - 32px); text-align: center; }
+  .toast.err { background: var(--bad); }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.5); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN (live mode only) ============ -->
+<section id="loginView" class="gutter min-h-screen grid place-items-center" style="background: radial-gradient(60% 60% at 80% 20%, var(--petal), transparent 70%), var(--blush)" hidden>
+  <form id="loginForm" class="panel w-full max-w-sm p-7 shadow-xl" novalidate>
+    <div class="flex items-baseline gap-2"><span class="font-display text-3xl font-semibold">AK</span><span class="font-display italic font-semibold text-2xl" style="color: #B0124F">Nail Co</span></div>
+    <p class="eyebrow mt-1">Owner dashboard</p>
+    <div class="mt-6 space-y-4">
+      <div><label class="lbl" for="loginEmail">Email</label><input id="loginEmail" type="email" class="field" autocomplete="username" required></div>
+      <div><label class="lbl" for="loginPass">Password</label><input id="loginPass" type="password" class="field" autocomplete="current-password" required></div>
+    </div>
+    <p id="loginErr" class="text-sm mt-3" style="color: var(--bad)" hidden></p>
+    <button id="loginBtn" type="submit" class="btn btn-rose w-full mt-5">Sign in</button>
+    <button id="forgotBtn" type="button" class="text-sm text-muted underline underline-offset-4 mt-4 block mx-auto">Forgot password?</button>
+    <a href="index.html" class="text-sm text-muted block text-center mt-6">← Back to website</a>
+  </form>
+  <form id="resetForm" class="panel w-full max-w-sm p-7 shadow-xl" hidden novalidate>
+    <p class="eyebrow">Set a new password</p>
+    <h1 class="font-display text-2xl mt-1">Choose your new password</h1>
+    <div class="mt-5"><label class="lbl" for="newPass">New password (at least 8 characters)</label><input id="newPass" type="password" class="field" autocomplete="new-password" minlength="8" required></div>
+    <p id="resetErr" class="text-sm mt-3" style="color: var(--bad)" hidden></p>
+    <button type="submit" class="btn btn-rose w-full mt-5">Save password</button>
+  </form>
+</section>
+
+<!-- ============ APP ============ -->
+<div id="appView" hidden>
+  <header class="bg-white border-b border-line sticky z-30" style="top: env(safe-area-inset-top, 0px)">
+    <div class="gutter max-w-6xl mx-auto flex items-center justify-between gap-3 py-3">
+      <div class="flex items-baseline gap-2 min-w-0">
+        <span class="font-display text-2xl font-semibold">AK</span><span class="font-display italic font-semibold text-xl" style="color: #B0124F">Nail Co</span>
+        <span class="eyebrow ml-2 hidden sm:inline">Admin</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="index.html" target="_blank" rel="noopener" class="btn btn-line btn-sm">View website ↗</a>
+        <button id="signOutBtn" type="button" class="btn btn-line btn-sm" hidden>Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="gutter max-w-6xl mx-auto" style="padding-block: 24px 80px">
+    <div id="modeBanner"></div>
+
+    <!-- stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
+      <div class="panel p-4"><p class="eyebrow">Total sets</p><p class="font-display text-3xl tabular mt-1" id="stTotal">0</p></div>
+      <div class="panel p-4"><p class="eyebrow">On website</p><p class="font-display text-3xl tabular mt-1" id="stVisible">0</p></div>
+      <div class="panel p-4"><p class="eyebrow">Hidden</p><p class="font-display text-3xl tabular mt-1" id="stHidden">0</p></div>
+      <div class="panel p-4"><p class="eyebrow">Price range</p><p class="font-display text-xl tabular mt-2" id="stRange">–</p></div>
+    </div>
+
+    <!-- toolbar -->
+    <div class="flex flex-wrap items-center gap-3 mt-6">
+      <div class="relative flex-1 min-w-[200px]">
+        <label for="search" class="sr-only">Search products</label>
+        <input id="search" type="search" class="field pl-10" placeholder="Search by name or code (e.g. AK15)">
+        <svg class="absolute left-3.5 top-1/2 -translate-y-1/2" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </div>
+      <label for="catFilter" class="sr-only">Filter by style</label>
+      <select id="catFilter" class="field" style="width: auto"></select>
+      <button id="addBtn" type="button" class="btn btn-rose">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Add new set
+      </button>
+    </div>
+    <p id="listHint" class="text-sm text-muted mt-3"></p>
+
+    <div id="list" class="panel mt-3 overflow-hidden"></div>
+    <div id="emptyState" class="panel mt-3 p-10 text-center" hidden>
+      <p class="font-display text-2xl">No products yet</p>
+      <p class="text-muted mt-2 max-w-md mx-auto">Start by importing the 51 sets that are already on your website, or add your first new set.</p>
+      <div class="flex flex-wrap justify-center gap-3 mt-5">
+        <button id="importStarterBtn" type="button" class="btn btn-rose">Import the starter collection</button>
+        <button type="button" class="btn btn-line" onclick="document.getElementById('addBtn').click()">Add a set</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============ EDITOR DRAWER ============ -->
+<div id="editor" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="edTitle">
+  <form id="edForm" class="drawer" novalidate>
+    <div class="flex items-center justify-between gap-3 px-6 py-4 border-b border-line sticky top-0 bg-white z-10">
+      <div><p class="eyebrow" id="edCode">New set</p><h2 class="font-display text-2xl" id="edTitle">Add a nail set</h2></div>
+      <button type="button" class="icon-btn" id="edClose" aria-label="Close editor"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+    <div class="px-6 py-5 space-y-5 flex-1">
+      <div>
+        <label class="lbl">Photos <span class="text-muted font-normal">· the first photo is the main one customers see</span></label>
+        <div id="edImgs" class="imgs"></div>
+        <input id="edFile" type="file" accept="image/*" multiple hidden>
+        <p class="text-xs text-muted mt-2">JPG, PNG, HEIC or WebP. Photos are resized and compressed automatically.</p>
+      </div>
+      <div>
+        <label class="lbl" for="edName">Set name</label>
+        <input id="edName" class="field" maxlength="80" placeholder="e.g. Rose Quartz Glow" required>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="lbl" for="edPrice">Price (Rs)</label>
+          <input id="edPrice" type="number" inputmode="numeric" min="0" step="50" class="field tabular" placeholder="1600" required>
+        </div>
+        <div>
+          <label class="lbl" for="edShape">Nail shape</label>
+          <select id="edShape" class="field"></select>
+        </div>
+      </div>
+      <div>
+        <label class="lbl" for="edCat">Style category</label>
+        <select id="edCat" class="field"></select>
+      </div>
+      <div>
+        <label class="lbl" for="edDesc">Description</label>
+        <textarea id="edDesc" class="field" rows="3" maxlength="400" placeholder="Colours, finish and details customers will love."></textarea>
+      </div>
+      <label class="flex items-center gap-3 cursor-pointer" for="edVisible">
+        <span class="switch"><input id="edVisible" type="checkbox" checked><span class="track"></span></span>
+        <span><span class="font-medium">Show on website</span><br><span class="text-sm text-muted">Turn off to hide a set without deleting it (sold out, seasonal).</span></span>
+      </label>
+      <p id="edErr" class="text-sm" style="color: var(--bad)" hidden></p>
+    </div>
+    <div class="px-6 py-4 border-t border-line flex flex-wrap gap-3 justify-between sticky bottom-0 bg-white" style="padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px))">
+      <button type="button" id="edDelete" class="btn btn-line" style="color: var(--bad)">Delete set</button>
+      <div class="flex gap-3 ml-auto">
+        <button type="button" id="edCancel" class="btn btn-line">Cancel</button>
+        <button type="submit" id="edSave" class="btn btn-rose">Save set</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- ============ CONFIRM DIALOG ============ -->
+<div id="confirm" class="dialog-wrap" hidden role="alertdialog" aria-modal="true" aria-labelledby="cfTitle">
+  <div class="dialog">
+    <h2 class="font-display text-2xl" id="cfTitle">Delete this set?</h2>
+    <p class="text-muted mt-2" id="cfText"></p>
+    <div class="flex justify-end gap-3 mt-6">
+      <button type="button" id="cfNo" class="btn btn-line">Keep it</button>
+      <button type="button" id="cfYes" class="btn btn-bad">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden role="status"></div>
+
+<script>
+(function () {
+  'use strict';
+  const SUPABASE_CDN = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js';
+  const LOCAL_KEY = 'aknail-admin-products-v1';
+  const CATS = { french: 'French Tips', chrome: 'Cat-Eye & Chrome', floral: '3D Floral', polka: 'Polka & Playful', luxe: 'Luxe & Glam' };
+  const SHAPES = ['Almond', 'Long almond', 'Short almond', 'Oval', 'Short oval', 'Square', 'Coffin', 'Stiletto'];
+
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const rs = n => 'Rs ' + Number(n || 0).toLocaleString('en-US');
+
+  let cfg = {}, sb = null, mode = 'local', bucket = 'nail-images';
+  let products = [];
+  let filter = { q: '', cat: 'all' };
+
+  /* ---------- toast ---------- */
+  function toast(msg, err) {
+    const t = $('#toast'); t.textContent = msg; t.className = 'toast' + (err ? ' err' : ''); t.hidden = false;
+    clearTimeout(toast.t); toast.t = setTimeout(() => t.hidden = true, err ? 5000 : 2400);
+  }
+
+  /* ---------- image compression ---------- */
+  function loadImage(file) {
+    return new Promise((ok, fail) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => { ok(img); URL.revokeObjectURL(url); };
+      img.onerror = () => { fail(new Error('This file could not be read as an image. Try a JPG or PNG.')); URL.revokeObjectURL(url); };
+      img.src = url;
+    });
+  }
+  async function compress(file, maxSide, quality) {
+    const img = await loadImage(file);
+    const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+    const w = Math.round(img.naturalWidth * scale), h = Math.round(img.naturalHeight * scale);
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); ctx.drawImage(img, 0, 0, w, h);
+    const toBlob = type => new Promise(r => c.toBlob(r, type, quality));
+    let blob = await toBlob('image/webp');
+    if (!blob || blob.type !== 'image/webp') blob = await toBlob('image/jpeg');
+    return blob;
+  }
+  const blobToDataURL = b => new Promise(ok => { const r = new FileReader(); r.onload = () => ok(r.result); r.readAsDataURL(b); });
+
+  /* ---------- data layer ---------- */
+  const clean = p => ({
+    code: p.code, name: String(p.name || '').trim(), price: Math.max(0, Math.round(Number(p.price) || 0)),
+    category: CATS[p.category] ? p.category : 'luxe', shape: p.shape || 'Almond',
+    description: String(p.description || '').trim(), images: (p.images || []).filter(Boolean),
+    sort_order: Number(p.sort_order) || 0, visible: p.visible !== false
+  });
+  async function fetchJSON(url) { const r = await fetch(url, { cache: 'no-store' }); if (!r.ok) throw new Error(url + ' not found'); return r.json(); }
+
+  const store = {
+    async list() {
+      if (mode === 'live') {
+        const { data, error } = await sb.from('products').select('*').order('sort_order').order('id');
+        if (error) throw error;
+        return data;
+      }
+      let saved = null;
+      try { saved = JSON.parse(localStorage.getItem(LOCAL_KEY) || 'null'); } catch (e) {}
+      if (Array.isArray(saved)) return saved;
+      const j = await fetchJSON('products.json');
+      const list = (j.products || j).map((p, i) => ({ ...clean(p), id: p.code || ('L' + i) }));
+      saveLocal(list);
+      return list;
+    },
+    async create(p) {
+      if (mode === 'live') {
+        const { data, error } = await sb.from('products').insert(clean(p)).select().single();
+        if (error) throw error; return data;
+      }
+      const row = { ...clean(p), id: p.code };
+      products.push(row); saveLocal(products); return row;
+    },
+    async update(p, patch) {
+      if (mode === 'live') {
+        const { data, error } = await sb.from('products').update(patch).eq('id', p.id).select().single();
+        if (error) throw error; return data;
+      }
+      Object.assign(p, patch); saveLocal(products); return p;
+    },
+    async remove(p) {
+      if (mode === 'live') {
+        const { error } = await sb.from('products').delete().eq('id', p.id);
+        if (error) throw error;
+        await deleteStored(p.images);
+        return;
+      }
+      products = products.filter(x => x !== p); saveLocal(products);
+    },
+    async upload(blob) {
+      if (mode === 'live') {
+        const ext = blob.type === 'image/webp' ? 'webp' : 'jpg';
+        const path = 'products/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.' + ext;
+        const { error } = await sb.storage.from(bucket).upload(path, blob, { contentType: blob.type, cacheControl: '31536000', upsert: false });
+        if (error) throw error;
+        return sb.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+      }
+      return blobToDataURL(blob);
+    }
+  };
+  function saveLocal(list) {
+    try { localStorage.setItem(LOCAL_KEY, JSON.stringify(list)); }
+    catch (e) { toast('Browser storage is full. Download products.json now, or connect Supabase for unlimited photos.', true); throw e; }
+  }
+  function storagePath(url) {
+    const marker = '/storage/v1/object/public/' + bucket + '/';
+    const i = String(url).indexOf(marker);
+    return i >= 0 ? decodeURIComponent(url.slice(i + marker.length)) : null;
+  }
+  async function deleteStored(urls) {
+    if (mode !== 'live') return;
+    const paths = (urls || []).map(storagePath).filter(Boolean);
+    if (paths.length) { try { await sb.storage.from(bucket).remove(paths); } catch (e) { console.warn(e); } }
+  }
+  function nextCode() {
+    const max = products.reduce((m, p) => { const n = parseInt(String(p.code || '').replace(/\D/g, ''), 10); return isNaN(n) ? m : Math.max(m, n); }, 0);
+    return 'AK' + String(max + 1).padStart(2, '0');
+  }
+
+  /* ---------- export / import ---------- */
+  function exportJSON() {
+    const out = { products: sorted().map(p => { const c = clean(p); return c; }) };
+    return JSON.stringify(out, null, 2);
+  }
+  function download() {
+    const blob = new Blob([exportJSON()], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'products.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    toast('products.json downloaded');
+  }
+  async function copyJSON() {
+    try { await navigator.clipboard.writeText(exportJSON()); toast('Product data copied'); }
+    catch (e) { toast('Copy was blocked by the browser. Use Download instead.', true); }
+  }
+
+  /* ---------- rendering ---------- */
+  const sorted = () => [...products].sort((a, b) => (a.sort_order - b.sort_order) || String(a.code).localeCompare(String(b.code)));
+
+  function renderBanner() {
+    const el = $('#modeBanner');
+    if (mode === 'live') {
+      el.innerHTML = `<div class="banner live"><span class="dot mt-2" style="background: var(--ok)"></span>
+        <div class="flex-1 min-w-[220px]"><p class="font-medium">Live: connected to your database</p>
+        <p class="text-sm text-muted">Every change you save here appears on your website right away. Signed in as <strong>${esc(window.__akEmail || '')}</strong>.</p></div>
+        <button type="button" class="btn btn-line btn-sm" id="bDownload">Download backup</button></div>`;
+    } else {
+      el.innerHTML = `<div class="banner local"><span class="dot mt-2" style="background: var(--warn)"></span>
+        <div class="flex-1 min-w-[220px]"><p class="font-medium">Local mode: edits are saved in this browser only</p>
+        <p class="text-sm text-muted">To publish, click <strong>Download products.json</strong> and upload it to your website folder, replacing the old file. Connect Supabase (see the setup guide) to publish instantly and log in from any phone.</p></div>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="btn btn-rose btn-sm" id="bDownload">Download products.json</button>
+          <button type="button" class="btn btn-line btn-sm" id="bCopy">Copy data</button>
+          <label class="btn btn-line btn-sm" for="bImport">Import file</label><input type="file" id="bImport" accept="application/json,.json" hidden>
+          <button type="button" class="btn btn-line btn-sm" id="bReset">Discard local edits</button>
+        </div></div>`;
+      $('#bCopy').onclick = copyJSON;
+      $('#bImport').onchange = async e => {
+        const f = e.target.files[0]; if (!f) return;
+        try {
+          const j = JSON.parse(await f.text());
+          const list = (j.products || j).map((p, i) => ({ ...clean(p), id: p.code || ('L' + i) }));
+          if (!list.length) throw new Error('empty');
+          products = list; saveLocal(products); render(); toast(`Imported ${list.length} sets`);
+        } catch (err) { toast('That file is not a valid products.json.', true); }
+        e.target.value = '';
+      };
+      $('#bReset').onclick = () => ask('Discard local edits?', 'This reloads the products from your website\'s products.json and removes changes saved only in this browser.', 'Discard', async () => {
+        try { localStorage.removeItem(LOCAL_KEY); } catch (e) {}
+        products = await store.list(); render(); toast('Local edits discarded');
+      });
+    }
+    $('#bDownload').onclick = download;
+  }
+
+  function render() {
+    const all = sorted();
+    const vis = all.filter(p => p.visible);
+    $('#stTotal').textContent = all.length;
+    $('#stVisible').textContent = vis.length;
+    $('#stHidden').textContent = all.length - vis.length;
+    $('#stRange').textContent = all.length ? `${rs(Math.min(...all.map(p => p.price)))} – ${rs(Math.max(...all.map(p => p.price)))}` : '–';
+
+    const q = filter.q.trim().toLowerCase();
+    const filtering = q || filter.cat !== 'all';
+    const list = all.filter(p => (filter.cat === 'all' || p.category === filter.cat) &&
+      (!q || p.name.toLowerCase().includes(q) || String(p.code).toLowerCase().includes(q)));
+
+    $('#emptyState').hidden = all.length > 0;
+    $('#list').hidden = all.length === 0;
+    $('#listHint').textContent = all.length === 0 ? '' : filtering
+      ? `Showing ${list.length} of ${all.length}. Clear the search and filter to change the order.`
+      : `${all.length} sets in website order. Use the arrows to move a set up or down. Change a price and it saves automatically.`;
+
+    const box = $('#list');
+    box.innerHTML = '';
+    if (all.length && !list.length) { box.innerHTML = '<p class="p-8 text-center text-muted">No sets match your search.</p>'; return; }
+    list.forEach(p => {
+      const idx = all.indexOf(p);
+      const row = document.createElement('div');
+      row.className = 'row' + (p.visible ? '' : ' is-hidden');
+      row.innerHTML = `
+        <div class="order-col">
+          <button type="button" class="icon-btn up" aria-label="Move ${esc(p.name)} up" ${filtering || idx === 0 ? 'disabled' : ''}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 15 6-6 6 6"/></svg></button>
+          <button type="button" class="icon-btn down" aria-label="Move ${esc(p.name)} down" ${filtering || idx === all.length - 1 ? 'disabled' : ''}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 9 6 6 6-6"/></svg></button>
+        </div>
+        <img class="thumbimg c-img" src="${esc(p.images[0] || '')}" alt="" loading="lazy">
+        <div class="c-info min-w-0">
+          <p class="pname font-medium leading-snug truncate">${esc(p.name)}</p>
+          <p class="text-xs text-muted mt-0.5">${esc(p.code)} · ${esc(CATS[p.category] || p.category)} · ${esc(p.shape)} · ${p.images.length} photo${p.images.length === 1 ? '' : 's'}${p.visible ? '' : ' · <strong style="color: var(--warn)">Hidden</strong>'}</p>
+        </div>
+        <div class="c-price">
+          <div class="price-wrap" style="max-width: 150px"><span>Rs</span><input type="number" min="0" step="50" inputmode="numeric" value="${p.price}" aria-label="Price for ${esc(p.name)}" class="price-in"></div>
+          <label class="switch c-vis-m" style="display:none" title="Show on website"><input type="checkbox" class="vis-in-m" ${p.visible ? 'checked' : ''} aria-label="Show ${esc(p.name)} on website"><span class="track"></span></label>
+        </div>
+        <label class="c-vis flex items-center gap-2 text-sm text-muted cursor-pointer">
+          <span class="switch"><input type="checkbox" class="vis-in" ${p.visible ? 'checked' : ''} aria-label="Show ${esc(p.name)} on website"><span class="track"></span></span>
+          <span>${p.visible ? 'Shown' : 'Hidden'}</span>
+        </label>
+        <div class="c-act flex gap-2 justify-end">
+          <button type="button" class="btn btn-line btn-sm edit">Edit</button>
+          <button type="button" class="btn btn-line btn-sm del" style="color: var(--bad)">Delete</button>
+        </div>`;
+      const priceIn = row.querySelector('.price-in');
+      priceIn.addEventListener('change', async () => {
+        const v = Math.round(Number(priceIn.value));
+        if (!isFinite(v) || v < 0) { priceIn.value = p.price; return toast('Enter a price of 0 or more.', true); }
+        try { const r = await store.update(p, { price: v }); Object.assign(p, r); render(); toast(`${p.name}: price saved (${rs(v)})`); }
+        catch (e) { priceIn.value = p.price; toast(errMsg(e), true); }
+      });
+      priceIn.addEventListener('keydown', e => { if (e.key === 'Enter') priceIn.blur(); });
+      row.querySelectorAll('.vis-in, .vis-in-m').forEach(cb => cb.addEventListener('change', async () => {
+        try { const r = await store.update(p, { visible: cb.checked }); Object.assign(p, r); render(); toast(cb.checked ? `${p.name} is now on the website` : `${p.name} is hidden from the website`); }
+        catch (e) { cb.checked = !cb.checked; toast(errMsg(e), true); }
+      }));
+      row.querySelector('.up').addEventListener('click', () => move(p, -1));
+      row.querySelector('.down').addEventListener('click', () => move(p, 1));
+      row.querySelector('.edit').addEventListener('click', () => openEditor(p));
+      row.querySelector('.del').addEventListener('click', () => confirmDelete(p));
+      box.appendChild(row);
+    });
+  }
+
+  async function move(p, dir) {
+    const all = sorted();
+    const i = all.indexOf(p), j = i + dir;
+    if (j < 0 || j >= all.length) return;
+    // normalise order numbers then swap
+    all.forEach((x, k) => x.sort_order = (k + 1) * 10);
+    const a = all[i], b = all[j];
+    [a.sort_order, b.sort_order] = [b.sort_order, a.sort_order];
+    render();
+    try {
+      if (mode === 'live') {
+        const updates = all.map(x => ({ id: x.id, sort_order: x.sort_order }));
+        for (const u of updates) { const { error } = await sb.from('products').update({ sort_order: u.sort_order }).eq('id', u.id); if (error) throw error; }
+      } else saveLocal(products);
+    } catch (e) { toast(errMsg(e), true); products = await store.list(); render(); }
+  }
+
+  /* ---------- editor ---------- */
+  let editing = null;   // product being edited, or null for new
+  let imgs = [];        // [{url, blob?, preview}]
+  let removedUrls = [];
+  const editor = $('#editor');
+
+  function fillSelect(sel, opts) { sel.innerHTML = opts.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join(''); }
+
+  function openEditor(p) {
+    editing = p || null;
+    removedUrls = [];
+    imgs = p ? p.images.map(u => ({ url: u, preview: u })) : [];
+    $('#edTitle').textContent = p ? 'Edit nail set' : 'Add a nail set';
+    $('#edCode').textContent = p ? p.code : nextCode() + ' · new set';
+    $('#edName').value = p ? p.name : '';
+    $('#edPrice').value = p ? p.price : '';
+    $('#edShape').value = p ? p.shape : 'Almond';
+    $('#edCat').value = p ? p.category : 'french';
+    $('#edDesc').value = p ? p.description : '';
+    $('#edVisible').checked = p ? p.visible : true;
+    $('#edDelete').hidden = !p;
+    $('#edErr').hidden = true;
+    renderImgs();
+    editor.hidden = false;
+    document.documentElement.style.overflow = 'hidden';
+    setTimeout(() => (p ? $('#edName') : $('#edImgs .drop')).focus(), 50);
+  }
+  function closeEditor() {
+    imgs.forEach(i => i.blob && URL.revokeObjectURL(i.preview));
+    editor.hidden = true; document.documentElement.style.overflow = '';
+  }
+  function renderImgs() {
+    const box = $('#edImgs');
+    box.innerHTML = '';
+    imgs.forEach((im, i) => {
+      const t = document.createElement('div');
+      t.className = 'imgtile' + (i === 0 ? ' main' : '');
+      t.innerHTML = `<img src="${esc(im.preview)}" alt="Photo ${i + 1}">${i === 0 ? '<span class="tag">Main</span>' : ''}
+        <div class="tools">${i > 0 ? '<button type="button" class="mk">Make main</button>' : '<span></span>'}<button type="button" class="rm" aria-label="Remove photo ${i + 1}">Remove</button></div>`;
+      const mk = t.querySelector('.mk');
+      if (mk) mk.onclick = () => { imgs.unshift(imgs.splice(i, 1)[0]); renderImgs(); };
+      t.querySelector('.rm').onclick = () => {
+        const [r] = imgs.splice(i, 1);
+        if (r.blob) URL.revokeObjectURL(r.preview); else removedUrls.push(r.url);
+        renderImgs();
+      };
+      box.appendChild(t);
+    });
+    const drop = document.createElement('button');
+    drop.type = 'button'; drop.className = 'drop';
+    drop.innerHTML = `<span><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" style="margin:0 auto 6px"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5-5-8 8"/></svg>${imgs.length ? 'Add more photos' : 'Add photos'}<br><span style="font-size:11px">tap or drag here</span></span>`;
+    drop.onclick = () => $('#edFile').click();
+    ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
+    ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
+    drop.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+    box.appendChild(drop);
+  }
+  async function addFiles(files) {
+    const list = [...files].filter(f => f.type.startsWith('image/') || /\.(heic|heif)$/i.test(f.name));
+    if (!list.length) return toast('Please choose image files.', true);
+    const [max, q] = mode === 'live' ? [1200, 0.82] : [800, 0.76];
+    for (const f of list) {
+      try { const blob = await compress(f, max, q); imgs.push({ blob, preview: URL.createObjectURL(blob) }); }
+      catch (e) { toast(e.message, true); }
+    }
+    renderImgs();
+  }
+  $('#edFile').addEventListener('change', e => { addFiles(e.target.files); e.target.value = ''; });
+
+  $('#edForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = $('#edErr');
+    const name = $('#edName').value.trim();
+    const price = Number($('#edPrice').value);
+    const problems = [];
+    if (!imgs.length) problems.push('add at least one photo');
+    if (!name) problems.push('enter a set name');
+    if ($('#edPrice').value === '' || !isFinite(price) || price < 0) problems.push('enter a price');
+    if (problems.length) { err.textContent = 'To save, please ' + problems.join(', ') + '.'; err.hidden = false; return; }
+    err.hidden = true;
+    const btn = $('#edSave'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Saving…';
+    const uploaded = [];
+    try {
+      const urls = [];
+      for (const im of imgs) {
+        if (im.blob) { const u = await store.upload(im.blob); uploaded.push(u); urls.push(u); }
+        else urls.push(im.url);
+      }
+      const data = {
+        name, price: Math.round(price), category: $('#edCat').value, shape: $('#edShape').value,
+        description: $('#edDesc').value.trim(), images: urls, visible: $('#edVisible').checked
+      };
+      if (editing) {
+        const r = await store.update(editing, data);
+        Object.assign(editing, r);
+        await deleteStored(removedUrls);
+        toast(`${name} saved`);
+      } else {
+        const minOrder = products.reduce((m, p) => Math.min(m, p.sort_order), 10);
+        const r = await store.create({ ...data, code: nextCode(), sort_order: minOrder - 10 });
+        if (mode === 'live') products.push(r);
+        toast(`${name} added to the top of your collection`);
+      }
+      closeEditor(); render();
+    } catch (ex) {
+      await deleteStored(uploaded);
+      err.textContent = errMsg(ex); err.hidden = false;
+    } finally { btn.disabled = false; btn.textContent = 'Save set'; }
+  });
+  $('#edClose').onclick = closeEditor;
+  $('#edCancel').onclick = closeEditor;
+  $('#edDelete').onclick = () => editing && confirmDelete(editing, true);
+  editor.addEventListener('click', e => { if (e.target === editor) closeEditor(); });
+
+  /* ---------- confirm ---------- */
+  let onYes = null;
+  function ask(title, text, yesLabel, fn) {
+    $('#cfTitle').textContent = title; $('#cfText').textContent = text; $('#cfYes').textContent = yesLabel;
+    onYes = fn; $('#confirm').hidden = false; $('#cfNo').focus();
+  }
+  $('#cfNo').onclick = () => { $('#confirm').hidden = true; onYes = null; };
+  $('#cfYes').onclick = async () => { $('#confirm').hidden = true; const f = onYes; onYes = null; if (f) await f(); };
+  function confirmDelete(p, fromEditor) {
+    ask('Delete this set?', `"${p.name}" (${p.code}) will be removed from your website permanently. To take it down for a while instead, switch "Show on website" off.`, 'Delete', async () => {
+      try {
+        await store.remove(p);
+        if (mode === 'live') products = products.filter(x => x !== p);
+        if (fromEditor) closeEditor();
+        render(); toast(`${p.name} deleted`);
+      } catch (e) { toast(errMsg(e), true); }
+    });
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!$('#confirm').hidden) $('#cfNo').click();
+    else if (!editor.hidden) closeEditor();
+  });
+
+  function errMsg(e) {
+    const m = (e && (e.message || e.error_description)) || String(e);
+    if (/row-level security|permission|not authorized|JWT/i.test(m)) return 'You are not allowed to make this change. Check that your email is on the admin list (see setup guide), then sign in again.';
+    if (/Failed to fetch|NetworkError/i.test(m)) return 'No internet connection. Check your connection and try again.';
+    if (/quota/i.test(m)) return 'Browser storage is full. Download products.json, or connect Supabase for unlimited photos.';
+    return 'Something went wrong: ' + m;
+  }
+
+  /* ---------- toolbar ---------- */
+  fillSelect($('#catFilter'), [['all', 'All styles'], ...Object.entries(CATS)]);
+  fillSelect($('#edCat'), Object.entries(CATS));
+  fillSelect($('#edShape'), SHAPES.map(s => [s, s]));
+  $('#search').addEventListener('input', e => { filter.q = e.target.value; render(); });
+  $('#catFilter').addEventListener('change', e => { filter.cat = e.target.value; render(); });
+  $('#addBtn').addEventListener('click', () => openEditor(null));
+  $('#importStarterBtn').addEventListener('click', async () => {
+    const btn = $('#importStarterBtn'); btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Importing…';
+    try {
+      const j = await fetchJSON('products.json');
+      const rows = (j.products || j).map(clean);
+      if (mode === 'live') {
+        const { data, error } = await sb.from('products').upsert(rows, { onConflict: 'code' }).select();
+        if (error) throw error;
+        products = data;
+      } else { products = rows.map(r => ({ ...r, id: r.code })); saveLocal(products); }
+      render(); toast(`Imported ${rows.length} sets`);
+    } catch (e) { toast(errMsg(e), true); }
+    finally { btn.disabled = false; btn.textContent = 'Import the starter collection'; }
+  });
+
+  /* ---------- auth + boot ---------- */
+  function show(view) { $('#loginView').hidden = view !== 'login'; $('#appView').hidden = view !== 'app'; }
+
+  async function enterApp() {
+    show('app'); renderBanner();
+    $('#list').innerHTML = '<p class="p-8 text-center text-muted">Loading your products…</p>';
+    try { products = (await store.list()).map(p => ({ ...p, images: p.images || [] })); }
+    catch (e) { products = []; toast(mode === 'local' ? 'Could not load products.json. Open this page from your website, or connect Supabase.' : errMsg(e), true); }
+    render();
+  }
+
+  async function checkAdmin() {
+    const { data: u } = await sb.auth.getUser();
+    window.__akEmail = u && u.user ? u.user.email : '';
+    const { data, error } = await sb.from('admins').select('email').limit(1);
+    return !error && data && data.length > 0;
+  }
+
+  $('#loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = $('#loginErr'), btn = $('#loginBtn');
+    err.hidden = true; btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Signing in…';
+    try {
+      const { error } = await sb.auth.signInWithPassword({ email: $('#loginEmail').value.trim(), password: $('#loginPass').value });
+      if (error) throw new Error('Wrong email or password.');
+      if (!(await checkAdmin())) { await sb.auth.signOut(); throw new Error('This account is not on the admin list. Add your email in Supabase (see setup guide, step 5).'); }
+      await enterApp();
+    } catch (ex) { err.textContent = ex.message; err.hidden = false; }
+    finally { btn.disabled = false; btn.textContent = 'Sign in'; }
+  });
+  $('#forgotBtn').addEventListener('click', async () => {
+    const email = $('#loginEmail').value.trim();
+    const err = $('#loginErr');
+    if (!email) { err.textContent = 'Type your email above first, then tap "Forgot password?".'; err.hidden = false; return; }
+    const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: location.href.split('#')[0] });
+    err.hidden = false; err.style.color = error ? 'var(--bad)' : 'var(--ok)';
+    err.textContent = error ? 'Could not send the email: ' + error.message : 'Check your inbox for a password reset link.';
+  });
+  $('#resetForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const pw = $('#newPass').value, err = $('#resetErr');
+    if (pw.length < 8) { err.textContent = 'Use at least 8 characters.'; err.hidden = false; return; }
+    const { error } = await sb.auth.updateUser({ password: pw });
+    if (error) { err.textContent = error.message; err.hidden = false; return; }
+    toast('Password updated');
+    $('#resetForm').hidden = true; $('#loginForm').hidden = false;
+    if (await checkAdmin()) enterApp();
+  });
+  $('#signOutBtn').addEventListener('click', async () => { await sb.auth.signOut(); location.reload(); });
+
+  async function boot() {
+    try { cfg = await fetchJSON('config.json'); } catch (e) { cfg = {}; }
+    bucket = cfg.storageBucket || bucket;
+    if (cfg.supabaseUrl && cfg.supabaseAnonKey) {
+      try {
+        await new Promise((ok, fail) => { const s = document.createElement('script'); s.src = SUPABASE_CDN; s.onload = ok; s.onerror = fail; document.head.appendChild(s); });
+        sb = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, { auth: { persistSession: true, autoRefreshToken: true } });
+        mode = 'live';
+      } catch (e) { toast('Could not reach Supabase. Working in local mode.', true); }
+    }
+    if (mode === 'live') {
+      $('#signOutBtn').hidden = false;
+      sb.auth.onAuthStateChange(ev => {
+        if (ev === 'PASSWORD_RECOVERY') { show('login'); $('#loginForm').hidden = true; $('#resetForm').hidden = false; }
+      });
+      if (/type=recovery/.test(location.hash)) { show('login'); $('#loginForm').hidden = true; $('#resetForm').hidden = false; return; }
+      const { data } = await sb.auth.getSession();
+      if (data.session && await checkAdmin()) enterApp(); else show('login');
+    } else enterApp();
+  }
+  boot();
+})();
+</script>
+</body>
+</html>
